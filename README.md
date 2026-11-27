@@ -2,7 +2,7 @@
 
 ![Trefoil and figure-eight knots](figures/knots_banner.png)
 
-![Python](https://img.shields.io/badge/Python-3.10%2B-blue) ![scikit-learn](https://img.shields.io/badge/scikit--learn-1.5%2B-orange) ![Data: KnotInfo](https://img.shields.io/badge/data-KnotInfo-green) ![License: MIT](https://img.shields.io/badge/license-MIT-lightgrey)
+[![tests](https://github.com/riyasattechnologies-arch/knot-ml/actions/workflows/tests.yml/badge.svg)](https://github.com/riyasattechnologies-arch/knot-ml/actions/workflows/tests.yml) ![Python](https://img.shields.io/badge/Python-3.10%2B-blue) ![scikit-learn](https://img.shields.io/badge/scikit--learn-1.5%2B-orange) ![Data: KnotInfo](https://img.shields.io/badge/data-KnotInfo-green) ![License: MIT](https://img.shields.io/badge/license-MIT-lightgrey)
 
 The Jones polynomial is a *quantum* invariant of knots: it comes from physics and representation theory, not from
 the shape of the knot. Hyperbolic volume is a *geometric* invariant: the volume of the knot complement in its unique
@@ -15,6 +15,8 @@ It has two projects:
    well classical invariants predict volume, and test a published conjecture on every alternating knot.
 2. **[Neural network for hyperbolic volume](2_neural_network_volume.ipynb):** train a neural network to predict volume
    from the Jones polynomial, then search for a simple formula that explains most of what the network learned.
+
+**Contents:** [How it fits together](#how-the-project-fits-together) · [Key results](#key-results) · [Quick start](#quick-start) · [Using the package](#using-the-package) · [Repository structure](#repository-structure) · [Methods](#methods-in-brief) · [Limitations](#limitations) · [References](#references)
 
 ## How the project fits together
 
@@ -85,35 +87,64 @@ With about 10% of the knots (≈300) for training, the network already beats the
 
 ---
 
-## Repository structure
-
-```
-knot-ml/
-├── 1_knot_invariant_analysis.ipynb   Project 1: theorems, volume predictors, conjecture test
-├── 2_neural_network_volume.ipynb     Project 2: neural network, learning curve, formula search
-├── load_data.py                      Builds data/knots.csv from the KnotInfo database
-├── data/                             Generated data (not tracked; run load_data.py)
-├── figures/                          Plots produced by the notebooks, plus the banner
-├── docs/methods.md                   Background and methods in more detail
-├── CITATION.cff                      How to cite this project
-├── requirements.txt
-└── LICENSE
-```
-
-## How to reproduce
+## Quick start
 
 Requires Python 3.10 or newer.
 
 ```bash
-git clone https://github.com/<your-username>/knot-ml.git
+git clone https://github.com/riyasattechnologies-arch/knot-ml.git
 cd knot-ml
 pip install -r requirements.txt
-python load_data.py          # no download needed: KnotInfo data ships with the database_knotinfo package
-jupyter notebook             # open each notebook and choose Run All
+
+python load_data.py              # build data/knots.csv from KnotInfo (no download needed)
+python scripts/reproduce.py      # recompute every number in this README -> results/metrics.json (~15 s)
+pytest                           # 12 tests, including the theorems checked on all 2,977 knots
+jupyter notebook                 # explore the two notebooks (figures are regenerated when you Run All)
 ```
 
-Both notebooks run in under a minute on a laptop. All random seeds are fixed, so the numbers above should reproduce exactly
-with the package versions in `requirements.txt` (small differences are possible with other versions of scikit-learn).
+All random seeds are fixed, so the numbers reproduce exactly with the versions in `requirements.txt`.
+The committed [`results/metrics.json`](results/metrics.json) holds the reference values.
+
+## Using the package
+
+The reusable code lives in the `knotml` package, so you can run your own experiments in a few lines:
+
+```python
+from knotml import load_knots, encode_jones, make_volume_network, cross_validated_error
+
+knots = load_knots(hyperbolic_only=True)                     # 2,970 hyperbolic knots
+X = encode_jones(knots["coeffs"], knots["jones_min_degree"], knots["jones_max_degree"])
+y = knots["volume"].values
+
+predictions, error = cross_validated_error(make_volume_network(), X, y)
+print(f"mean relative error: {error:.1%}")                    # 4.5%
+```
+
+| Module | What it does |
+|---|---|
+| `knotml.data` | Builds and loads the knot table from KnotInfo; parses Jones polynomial vectors |
+| `knotml.jones` | Evaluates V(t) at any real or complex t; span |
+| `knotml.features` | Encodes polynomials as fixed-length model inputs |
+| `knotml.models` | Neural network, cross-validation, error metric, angle scan |
+
+## Repository structure
+
+```
+knot-ml/
+├── knotml/                           Python package: data, Jones polynomial tools, features, models
+├── 1_knot_invariant_analysis.ipynb   Project 1: theorems, volume predictors, conjecture test
+├── 2_neural_network_volume.ipynb     Project 2: neural network, learning curve, formula search
+├── scripts/reproduce.py              Recomputes all reported numbers
+├── tests/                            Unit tests and dataset-wide theorem checks (pytest)
+├── results/metrics.json              Reference values for every reported number
+├── figures/                          Plots produced by the notebooks, plus the banner
+├── docs/methods.md                   Mathematical background and methods in detail
+├── load_data.py                      Builds data/knots.csv
+├── data/                             Generated data (not tracked)
+├── .github/workflows/tests.yml       Runs the tests on every push (Python 3.10 and 3.12)
+├── pyproject.toml · requirements.txt
+└── CITATION.cff · LICENSE
+```
 
 ## Methods in brief
 
@@ -180,9 +211,6 @@ See [docs/methods.md](docs/methods.md) for the mathematical background and full 
 
 **Sher Baz Riasat**, Computer Science and Applied Mathematics, Texas State University
 
-## Acknowledgments
+## License
 
-Knot data from KnotInfo, accessed through the `database_knotinfo` Python package. Built with assistance from Claude (an AI
-assistant); I ran, checked and can explain every result.
-
-Code released under the [MIT License](LICENSE).
+Code released under the [MIT License](LICENSE). Knot data from [KnotInfo](https://knotinfo.math.indiana.edu).

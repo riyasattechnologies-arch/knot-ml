@@ -112,5 +112,6 @@ formula in the determinant. Near θ = 0 the formula carries no information, sinc
 ## 4. Reproducibility
 
 All random seeds are fixed (`random_state=0` for the cross-validation split and the network; seeds 0–2 for the
-learning curve). Results were produced with Python 3.13, NumPy 2.5, pandas 3.0, scikit-learn 1.9 and
+learning curve). `python scripts/reproduce.py` recomputes every reported number and writes `results/metrics.json`;
+`pytest` re-checks the theorems and the conjecture on the full dataset. Results were produced with Python 3.13, NumPy 2.5, pandas 3.0, scikit-learn 1.9 and
 database_knotinfo 2026.11.2.

@@ -1,0 +1,30 @@
+{
+  "project1_invariant_analysis": {
+    "n_knots": 2977,
+    "n_alternating": 1851,
+    "n_hyperbolic": 2970,
+    "det_equals_abs_V_minus_1": 2977,
+    "span_equals_crossing_alternating": 1851,
+    "span_less_than_crossing_nonalternating": 1126,
+    "corr_volume_crossing_number": 0.471,
+    "corr_volume_log_det_all": 0.841,
+    "corr_volume_log_det_alternating": 0.966,
+    "ckp_bound_holds": 1846,
+    "ckp_n_tested": 1846,
+    "ckp_max_ratio": 0.629,
+    "ckp_closest_knot": "12a_868"
+  },
+  "project2_volume_prediction": {
+    "n_knots": 2970,
+    "neural_network_error": 0.0452,
+    "neural_network_error_alternating": 0.0417,
+    "neural_network_error_nonalternating": 0.051,
+    "linear_log_det_error": 0.1157,
+    "linear_coefficients_error": 0.1713,
+    "best_angle_over_pi": 0.79,
+    "best_angle_error": 0.0596,
+    "angle_3pi_over_4_error": 0.0669,
+    "angle_pi_error": 0.1118
+  },
+  "evaluation": "5-fold cross-validation, shuffled, random_state=0"
+}

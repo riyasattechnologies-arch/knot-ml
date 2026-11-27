@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "knotml"
+version = "1.0.0"
+description = "Data analysis and machine learning on knot invariants: what the Jones polynomial knows about hyperbolic volume"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Sher Baz Riasat" }]
+requires-python = ">=3.10"
+dependencies = [
+    "database_knotinfo>=2026.11.2",
+    "numpy>=2.0",
+    "pandas>=2.2",
+    "matplotlib>=3.9",
+    "scikit-learn>=1.5",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "jupyter", "nbconvert"]
+
+[tool.setuptools]
+packages = ["knotml"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
