@@ -211,6 +211,11 @@ See [docs/methods.md](docs/methods.md) for the mathematical background and full 
 
 **Sher Baz Riasat**, Computer Science and Applied Mathematics, Texas State University
 
+## Acknowledgments
+
+Knot data from [KnotInfo: Table of Knot Invariants](https://knotinfo.math.indiana.edu) by C. Livingston and A. H. Moore,
+accessed through the `database_knotinfo` Python package.
+
 ## License
 
-Code released under the [MIT License](LICENSE). Knot data from [KnotInfo](https://knotinfo.math.indiana.edu).
+Code released under the [MIT License](LICENSE).
