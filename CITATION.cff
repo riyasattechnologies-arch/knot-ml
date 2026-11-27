@@ -1,0 +1,14 @@
+cff-version: 1.2.0
+message: "If you use this project, please cite it as below."
+title: "What Does the Jones Polynomial Know About a Knot's Geometry? Machine learning on 2,977 prime knots"
+authors:
+  - family-names: Riasat
+    given-names: Sher Baz
+    affiliation: Texas State University
+date-released: 2026-11-27
+license: MIT
+keywords:
+  - knot theory
+  - Jones polynomial
+  - hyperbolic volume
+  - machine learning

@@ -1,0 +1,7 @@
+# Tested with Python 3.13
+database_knotinfo>=2026.11.2
+numpy>=2.0
+pandas>=2.2
+matplotlib>=3.9
+scikit-learn>=1.5
+jupyter
